@@ -1,6 +1,11 @@
 import pandas as pd
 import numpy as np
 
+'''
+Purpose of this file is to generate a list of ASNs which should have planned and actual costs
+outputs it in the format of the google sheet where the planned and actual asn costs are being recorded
+
+'''
 #doesnt change
 MC_directory = 'C:/Users/585000/Desktop/PCFSM/2017 KPIs/'
 
@@ -8,11 +13,11 @@ MC_directory = 'C:/Users/585000/Desktop/PCFSM/2017 KPIs/'
 
 ### USE PAD COR not pad cor ppm
 matrix_file = 'PAD COR 6_26_17.csv'
+#set reporting month, this matches up with KPI 6 and 7,
 month_period = ['2017-05']
 
 save_loc = 'C:/Users/585000/Desktop/PCFSM/2017 KPIs/ASNs for google drive/'
 save_name = "may_ASNS_test_6_26_v2.csv"
-save_yes_no = 'yes'
 
 dat = pd.read_csv(MC_directory+matrix_file)
 
