@@ -5,13 +5,26 @@ import os
 '''
 The purpose of this document is to merge the Q1 and Q2 lead time matricies to create a finalized version of them...
 
+glob looks at the contents of some file, and extracts names of the csv files. the csv files in the main directory are modified versions
+of the lead time matrices produced by ben smith. 
+
+Columns used for lane identification
+Origin	Dest	Mode	Client Incoterm	Origin+Dest+Mode+INCO
+I currently change the name of the quarter manually  changed to match the year and quarter which it applies to. ex 2017-01 for Q1 2017 etc. Each Quarter can be kept as
+its own csv. 
+Original lead time column name "Shipment Lead Time: Vendor Fulfilment Date > Delivery (For KPIs 4&5)"
+
+
 I think I can just do a merge on both so it should contain all of the rows... can pobably just iterate on them by having
 them in a file?.... could automate the generation each time within the kpi folder to make it so I have to do less
 manually?
 
 Seems reasonable...
 '''
+#need to set the quarters that are being used. so update once per quarter to account for new columns
+quarters = ['2017-01 leadtimes','2017-02 leadtimes','2017-03 leadtimes']
 
+#######################################################################################################
 directory = 'C:/Users/585000/Desktop/PCFSM/FLT matrix calculations/quarter_matricies'
 
 os.chdir(directory)
@@ -43,7 +56,8 @@ for file in filelist2:
         matrix['Dest_y'] = matrix['Dest_y'].fillna('')
         matrix['Mode_y'] = matrix['Mode_y'].fillna('')
         matrix['Client Incoterm_y'] = matrix['Client Incoterm_y'].fillna('')
-
+        
+        #create that default... this may not be a correct way to handle this. 
         for index, row in matrix.iterrows():
             if row['Origin_x'] != '' and row['Dest_x'] != '' and row['Mode_x']!= '' and row['Client Incoterm_x'] != '':
                 matrix.loc[index, 'Origin'] = row['Origin_x']
@@ -60,6 +74,10 @@ for file in filelist2:
                      'Origin_y', 'Dest_y', 'Mode_y', 'Client Incoterm_y'
                      ], axis=1, inplace=True)
 
-cols = ['Origin','Dest','Mode','Client Incoterm','lane_id','2017-01 leadtimes','2017-02 leadtimes','2017-03 leadtimes']
+ #this needs to be adjusted
+cols = ['Origin','Dest','Mode','Client Incoterm','lane_id']
+
+cols = cols + quarters
+
 matrix = matrix[cols]
 matrix.to_csv(directory+'/matrix_tests/matrix_test_7_27_07.csv',index = False)
